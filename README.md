@@ -32,6 +32,8 @@ The repository includes the Gradle wrapper, so from a machine with Android Studi
 
 The app requests a short-lived token from the existing Worker endpoint `https://jarvis-ai-backend.suryawebstudio.workers.dev/live-token`. The Worker has the `GEMINI_API_KEY` secret bound in Cloudflare; no Gemini key is stored in this repository. Tap **Start voice conversation**, grant microphone permission, speak, and tap **Stop** to close the session.
 
+For Code On the Go, `gradle.properties` disables the IDE-only LogSender injection with `androidide.logsender.isEnabled=false`. Code On the Go's LogSender plugin adds a dependency too late for Gradle 9.6.1; disabling it prevents the `Cannot mutate the dependencies ... after the configuration was resolved` failure and does not disable MARK's voice or network code.
+
 The verified debug APK is generated at `app/build/outputs/apk/debug/app-debug.apk`. Install it on a connected Android device with:
 
 ```bash
