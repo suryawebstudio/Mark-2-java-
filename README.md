@@ -2,7 +2,7 @@
 
 MARK is a Java Android foundation for a voice-controlled personal assistant. The repository uses package root `com.suryawebstudio.mark`, minSdk 26, targetSdk 34, and compileSdk 34.
 
-## Current scope: Stage 1 foundation
+## Current scope: Stage 1 Live voice milestone
 
 Implemented:
 
@@ -14,8 +14,12 @@ Implemented:
 - A foreground-service notification boundary for future microphone sessions.
 - Honest home-screen status: microphone capture and provider connection are not enabled by this foundation.
 - Unit coverage for confirmation-payload binding.
+- Cloudflare Worker token client for `jarvis-ai-backend.suryawebstudio.workers.dev`.
+- Gemini Live WebSocket provider using an ephemeral token.
+- Android `AudioRecord` input at 16 kHz PCM and `AudioTrack` output at 24 kHz PCM.
+- Start/Stop voice conversation controls and live input/output transcript handling.
 
-Not implemented yet (intentionally, not hidden): Gemini Live WebSocket/audio capture, Room persistence, transcripts, reconnect/backoff, full Compose UI, permission-management screen, and the later productivity/communication stages. The foreground service contains a `TODO(MARK)` at the point where AudioRecord and a secure provider session must be wired.
+Not implemented yet (intentionally, not hidden): session resumption/reconnect backoff, Room persistence, tool calls over Live, full Compose UI, permission-management screen, background microphone operation, and the later productivity/communication stages. The current voice flow is foreground-only and must be tested on the target Infinix device.
 
 ## Build and test
 
@@ -25,6 +29,8 @@ The repository includes the Gradle wrapper, so from a machine with Android Studi
 ./gradlew test
 ./gradlew assembleDebug
 ```
+
+The app requests a short-lived token from the existing Worker endpoint `https://jarvis-ai-backend.suryawebstudio.workers.dev/live-token`. The Worker has the `GEMINI_API_KEY` secret bound in Cloudflare; no Gemini key is stored in this repository. Tap **Start voice conversation**, grant microphone permission, speak, and tap **Stop** to close the session.
 
 The verified debug APK is generated at `app/build/outputs/apk/debug/app-debug.apk`. Install it on a connected Android device with:
 
@@ -36,7 +42,7 @@ In Android Studio, open this repository, let Gradle sync, select the `app` confi
 
 Expected behavior on a device: the home screen reports `IDLE`, states that no microphone is recording, and allows the user to request `RECORD_AUDIO`. The registered tools remain in the in-app allowlist; no model can invoke an unknown name.
 
-The debug APK build has been verified with Gradle 8.5, Android Gradle Plugin 8.2.2, Java 21, compileSdk 34, and build-tools 34.0.0. There is no emulator or physical Android device attached to this session, so device behavior remains **NOT TESTED ON DEVICE**.
+The debug APK build and unit tests have been verified with Gradle 8.5, Android Gradle Plugin 8.2.2, Java 21, compileSdk 34, and build-tools 34.0.0. The Worker `/live-token` endpoint was also tested and returned a short-lived token without exposing the API key. There is no emulator or physical Android device attached to this session, so microphone, speaker, and Gemini WebSocket behavior remain **NOT TESTED ON DEVICE**.
 
 ## Android API / permission notes
 

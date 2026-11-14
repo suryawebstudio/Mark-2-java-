@@ -10,3 +10,5 @@
 app/build/
 .tools/
 .android-sdk/
+.dev.vars
+cloudflare/**/.wrangler/

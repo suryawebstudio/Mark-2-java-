@@ -16,21 +16,23 @@ public interface AIProvider {
     final class ProviderConfig {
         public final String sessionEndpoint;
         public final String ephemeralToken;
+        public final String model;
 
-        public ProviderConfig(String sessionEndpoint, String ephemeralToken) {
+        public ProviderConfig(String sessionEndpoint, String ephemeralToken, String model) {
             this.sessionEndpoint = sessionEndpoint;
             this.ephemeralToken = ephemeralToken;
+            this.model = model;
         }
     }
 
     final class AIEvent {
-        public enum Type { AUDIO_OUT, TRANSCRIPT_IN, TRANSCRIPT_OUT, TOOL_CALL, TURN_COMPLETE, ERROR }
+        public enum Type { CONNECTED, CLOSED, AUDIO_OUT, TRANSCRIPT_IN, TRANSCRIPT_OUT, TOOL_CALL, TURN_COMPLETE, INTERRUPTED, ERROR }
         public final Type type;
         public final String text;
+        public final Object data;
 
-        public AIEvent(Type type, String text) {
-            this.type = type;
-            this.text = text;
-        }
+        public AIEvent(Type type, String text) { this(type, text, null); }
+        public AIEvent(Type type, Object data) { this(type, null, data); }
+        private AIEvent(Type type, String text, Object data) { this.type = type; this.text = text; this.data = data; }
     }
 }
