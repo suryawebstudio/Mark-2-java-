@@ -19,16 +19,24 @@ Not implemented yet (intentionally, not hidden): Gemini Live WebSocket/audio cap
 
 ## Build and test
 
-From a machine with Android Studio or the Android SDK and Gradle available:
+The repository includes the Gradle wrapper, so from a machine with Android Studio or the Android SDK installed:
 
 ```bash
 ./gradlew test
 ./gradlew assembleDebug
 ```
 
+The verified debug APK is generated at `app/build/outputs/apk/debug/app-debug.apk`. Install it on a connected Android device with:
+
+```bash
+adb install -r app/build/outputs/apk/debug/app-debug.apk
+```
+
+In Android Studio, open this repository, let Gradle sync, select the `app` configuration, and press **Run**. The launcher activity is `com.suryawebstudio.mark.MainActivity`.
+
 Expected behavior on a device: the home screen reports `IDLE`, states that no microphone is recording, and allows the user to request `RECORD_AUDIO`. The registered tools remain in the in-app allowlist; no model can invoke an unknown name.
 
-This sandbox did not contain Gradle, the Android SDK, an emulator, or a physical Android device. Therefore this repository is **NOT TESTED ON DEVICE** and no Android build is claimed as verified here.
+The debug APK build has been verified with Gradle 8.5, Android Gradle Plugin 8.2.2, Java 21, compileSdk 34, and build-tools 34.0.0. There is no emulator or physical Android device attached to this session, so device behavior remains **NOT TESTED ON DEVICE**.
 
 ## Android API / permission notes
 

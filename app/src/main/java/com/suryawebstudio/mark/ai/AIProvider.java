@@ -1,6 +1,6 @@
 package com.suryawebstudio.mark.ai;
 
-import com.suryawebstudio.mark.tools.ToolResult;
+import com.suryawebstudio.mark.tools.ToolTypes;
 
 import java.util.function.Consumer;
 
@@ -11,7 +11,7 @@ public interface AIProvider {
     void sendAudio(byte[] chunk);
     void sendText(String text);
     void interrupt();
-    void sendToolResult(String callId, ToolResult result);
+    void sendToolResult(String callId, ToolTypes.ToolResult result);
 
     final class ProviderConfig {
         public final String sessionEndpoint;
